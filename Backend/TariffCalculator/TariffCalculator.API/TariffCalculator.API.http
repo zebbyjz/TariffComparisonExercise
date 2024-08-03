@@ -1,0 +1,6 @@
+@TariffCalculator.API_HostAddress = http://localhost:5083
+
+GET {{TariffCalculator.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
