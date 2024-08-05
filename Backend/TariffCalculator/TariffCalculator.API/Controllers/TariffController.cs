@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TariffCalculator.Application.DTOs;
 using TariffCalculator.Application.Extensions;
 using TariffCalculator.Application.Interfaces.ExternalServices;
 using TariffCalculator.Domain.Interfaces.DomainServices;
@@ -8,7 +7,7 @@ namespace TariffCalculator.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class TariffController
+public class TariffController : ControllerBase
 {
     private readonly ILogger<TariffController> _logger;
     private readonly IExternalTariffProvider _externalTariffProvider;
@@ -26,12 +25,29 @@ public class TariffController
     
     
     [HttpGet(Name = "GetProductComparison")]
-    public async Task<List<ProductDetailsDto>> GetProductComparison(int yearlyUsage)
+    // public async Task<ActionResult<List<ProductDetailsDto>>> GetProductComparison(int yearlyUsage)
+    public async Task<IActionResult> GetProductComparison(int yearlyUsage)
     {
-        var tariffList = await _externalTariffProvider.GetTariffList();
-        return _productComparisonService
-            .GetProductComparison(tariffList, yearlyUsage)
-            .ToProductDetailsListDto();
+        if (yearlyUsage <= 0)
+        {
+            return BadRequest(ResponseMessages.YearlyUsageCannotBeLessThanZero);
+        }
+        
+        try
+        {
+            var tariffList = await _externalTariffProvider.GetTariffList();
+            var result = _productComparisonService
+                .GetProductComparison(tariffList, yearlyUsage)
+                .ToProductDetailsListDto();
+            
+            if (result != null) return Ok(result);
+            return NotFound();
+        }
+        catch (Exception e)
+        {
+            //TODO: Add Structured Logging
+            return StatusCode(StatusCodes.Status500InternalServerError, ResponseMessages.InternalServerError);
+        }
     }
 
 }
