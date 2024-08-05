@@ -1,5 +1,7 @@
-﻿using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using TariffCalculator.Application.Interfaces.ExternalServices;
+using TariffCalculator.Domain.DomainServices;
+using TariffCalculator.Domain.Interfaces.DomainServices;
 
 namespace TariffCalculator.Application
 {
@@ -14,7 +16,7 @@ namespace TariffCalculator.Application
         /// <returns></returns>
         public static IServiceCollection AddApplication (this IServiceCollection services)
         {
-            services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+            services.AddTransient<IProductComparisonService, ProductComparisonService>();
             return services;
         }
     }
