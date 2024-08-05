@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+using Microsoft.AspNetCore.Mvc;
+using TariffCalculator.Application.DTOs;
 using TariffCalculator.Application.Extensions;
 using TariffCalculator.Application.Interfaces.ExternalServices;
 using TariffCalculator.Domain.Interfaces.DomainServices;
@@ -25,6 +27,9 @@ public class TariffController : ControllerBase
     
     
     [HttpGet(Name = "GetProductComparison")]
+    [ProducesResponseType(typeof(List<ProductDetailsDto>),(int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     // public async Task<ActionResult<List<ProductDetailsDto>>> GetProductComparison(int yearlyUsage)
     public async Task<IActionResult> GetProductComparison(int yearlyUsage)
     {
