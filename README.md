@@ -31,4 +31,5 @@
 # Missing Features:
 1. Robust network error handling in frontend.
 2. Exhaustive exception handling in backend.
-3. Dockerfile for easy setup for both frontend and backend
+3. Unit Tests
+4. Dockerfile for easy setup for both frontend and backend
