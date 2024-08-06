@@ -50,7 +50,7 @@ public class TariffController : ControllerBase
         }
         catch (Exception e)
         {
-            //TODO: Add Structured Logging
+            _logger.LogError(e,e.Message);
             return StatusCode(StatusCodes.Status500InternalServerError, ResponseMessages.InternalServerError);
         }
     }

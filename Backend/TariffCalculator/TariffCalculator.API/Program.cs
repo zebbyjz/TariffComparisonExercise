@@ -1,4 +1,5 @@
 
+using Serilog;
 using TariffCalculator.Application;
 using TariffCalculator.Infrastructure;
 
@@ -19,6 +20,8 @@ namespace TariffCalculator.API
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
             
+            builder.Host.UseSerilog((context, configuration)=>
+                configuration.ReadFrom.Configuration(context.Configuration));
             
             //Adding very liberal CORS options for development purposes. Should definitely be stricter in production
             builder.Services.AddCors(options =>
